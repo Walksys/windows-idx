@@ -8,11 +8,11 @@ mkdir -p "$WORKDIR"
 cd "$WORKDIR"
 
 # 1. روابط وأسماء الملفات لنسخة حديثة (Windows Server 2022)
-ISO_URL="https://go.microsoft.com/fwlink/?linkid=2345730&clcid=0x409&culture=en-us&country=us"
+ISO_URL="https://archive.org/download/windows-10-lite-edition-19h2-x64/Windows%2010%20Lite%20Edition%2019H2%20x64.iso"
 ISO_FILE="win2025.iso"
 DISK_FILE="win2025.qcow2"
 DISK_SIZE="64G"
-PINGGY_TOKEN="kzm1eczI7Bb"
+PINGGY_TOKEN="mwILtcPhp4j"
 
 # 2. تنظيف العمليات القديمة تماماً
 pkill -f "ssh" || true
@@ -61,7 +61,7 @@ fi
 echo "🎮 جاري تشغيل المثبت (Installation Mode)..."
 qemu-system-x86_64 \
     -enable-kvm \
-    -cpu host -smp 4 -m 8G -machine q35 \
+    -cpu host -smp 4 -m 4G -machine q35 \
     -drive file="$DISK_FILE",if=ide,format=qcow2 \
     -cdrom "$ISO_FILE" \
     -boot order=d \
