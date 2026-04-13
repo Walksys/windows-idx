@@ -8,9 +8,9 @@ mkdir -p "$WORKDIR"
 cd "$WORKDIR"
 
 # 1. روابط وأسماء الملفات لنسخة حديثة (Windows Server 2022)
-ISO_URL="https://archive.org/download/26100.1.240331-1435.-ge-release-server-x-64-fre-zh-cn/26100.1.240331-1435.GE_RELEASE_SERVER_X64FRE_ZH-CN.ISO"
-ISO_FILE="win2022.iso"
-DISK_FILE="win2022.qcow2"
+ISO_URL="https://go.microsoft.com/fwlink/?linkid=2345730&clcid=0x409&culture=en-us&country=us"
+ISO_FILE="win2025.iso"
+DISK_FILE="win2025.qcow2"
 DISK_SIZE="64G"
 PINGGY_TOKEN="kzm1eczI7Bb"
 
