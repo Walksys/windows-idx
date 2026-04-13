@@ -8,7 +8,7 @@
     qemu
     openssh
     wget
-
+    ngrok
   ];
   idx.workspace.onStart = {
     run-ngrok = ''
