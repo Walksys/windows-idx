@@ -8,9 +8,9 @@ mkdir -p "$WORKDIR"
 cd "$WORKDIR"
 
 # 1. روابط وأسماء الملفات لنسخة حديثة (Windows Server 2022)
-ISO_URL="https://archive.org/download/windows-10-lite-edition-19h2-x64/Windows%2010%20Lite%20Edition%2019H2%20x64.iso"
-ISO_FILE="win2025.iso"
-DISK_FILE="win2025.qcow2"
+ISO_URL="https://software.download.prss.microsoft.com/dbazure/Win10_22H2_English_x64v1.iso?t=2ee2ec1b-7820-43f2-8966-e4c9b4d740c0&P1=1776209782&P2=601&P3=2&P4=RYkrHZybc9IVI9TmOF1qXvwskgFtDtd%2fsvkubT2WJGSxo72fGzaaYVbDTcjAIEJiN%2b3Bj0mKT%2fdE49NBnOgEPpT01LNKkNuikJuZrt6Cin1Ih9FS%2f2IO56pR535QHfhBMFM9IphmN2cZDP6RSkqZTtpAhwRnOLeBTufNe4XXluKPTqFUORPHXLK3z0%2bYQ%2fzETUPReDiDjRkc%2fhkRSiQsgU4PVz46GHzQMNNujwz4UYcCmC4BL2ZK4%2faHa0lkXM%2fEIX0KzV%2fxGlXbpqjL7se8eVOxu0A747tKYgOVH9rCQQRx2JJgbG%2bv3XJ%2br%2fvQdX6RoGSM35e%2b0FpzJUBz%2btGGRA%3d%3d"
+ISO_FILE="win10.iso"
+DISK_FILE="win10.qcow2"
 DISK_SIZE="64G"
 PINGGY_TOKEN="mwILtcPhp4j"
 
@@ -61,7 +61,7 @@ fi
 echo "🎮 جاري تشغيل المثبت (Installation Mode)..."
 qemu-system-x86_64 \
     -enable-kvm \
-    -cpu host -smp 4 -m 4G -machine q35 \
+    -cpu host -smp 4 -m 8G -machine q35 \
     -drive file="$DISK_FILE",if=ide,format=qcow2 \
     -cdrom "$ISO_FILE" \
     -boot order=d \
