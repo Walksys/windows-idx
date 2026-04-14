@@ -8,7 +8,7 @@ mkdir -p "$WORKDIR"
 cd "$WORKDIR"
 
 # 1. روابط وأسماء الملفات لنسخة حديثة (Windows Server 2022)
-ISO_URL="https://go.microsoft.com/fwlink/p/?LinkID=2195280&clcid=0x409&culture=en-us&country=US"
+ISO_URL="https://archive.org/download/windows-10-lite-edition-19h2-x64/Windows%2010%20Lite%20Edition%2019H2%20x64.iso"
 ISO_FILE="win10.iso"
 DISK_FILE="win10.qcow2"
 DISK_SIZE="64G"
