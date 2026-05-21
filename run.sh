@@ -5,10 +5,10 @@ WORKDIR="$HOME/windows-idx"
 mkdir -p "$WORKDIR"
 cd "$WORKDIR"
 
-ISO_URL="https://archive.org/download/20348.169.210806-1117.-fe-release-svc-prod-1-server-x-64-fre-en-us/20348.169.210806-1117.FE_RELEASE_SVC_PROD1_SERVER_X64FRE_EN-US.ISO"
+ISO_URL="https://archive.org/download/tiny11-23h2/tiny11%2023h2%20x64.iso"
 
-ISO_FILE="windows.iso"
-DISK_FILE="windows.qcow2"
+ISO_FILE="tiny11.iso"
+DISK_FILE="tiny11.qcow2"
 
 echo "🧹 Cleaning old sessions..."
 
