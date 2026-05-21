@@ -1,50 +1,69 @@
 #!/usr/bin/env bash
 set -e
 
-# مكان العمل
 WORKDIR="$HOME/windows-idx"
 mkdir -p "$WORKDIR"
 cd "$WORKDIR"
 
-# أسماء الملفات
 ISO_URL="https://archive.org/download/20348.169.210806-1117.-fe-release-svc-prod-1-server-x-64-fre-en-us/20348.169.210806-1117.FE_RELEASE_SVC_PROD1_SERVER_X64FRE_EN-US.ISO"
-ISO_FILE="win10.iso"
-DISK_FILE="win10.qcow2"
-LINKS_FILE="links.txt"
 
-# 1. تنظيف القديم
-pkill -f "ssh" || true
-pkill -f "qemu" || true
-rm -f tunnels.log "$LINKS_FILE"
+ISO_FILE="windows.iso"
+DISK_FILE="windows.qcow2"
 
-# 2. إنشاء القرص والتحميل (لو مش موجودين)
-if [ ! -f "$DISK_FILE" ]; then qemu-img create -f qcow2 "$DISK_FILE" 64G; fi
-if [ ! -f "$ISO_FILE" ]; then wget -O "$ISO_FILE" "$ISO_URL"; fi
+echo "🧹 Cleaning old sessions..."
 
-echo "🚀 جاري فتح الأنفاق وتسجيلها في الملف..."
+pkill -f qemu || true
+pkill -f websockify || true
+pkill -f novnc || true
 
-# 3. فتح النفق (Serveo)
+rm -f nohup.out
 
-# انتظر لحظة عشان اللينك يتولد
-sleep 15
+echo "💽 Preparing disk..."
 
-# 4. استخراج الروابط وحفظها في ملف links.txt
-echo "--- روابط الويندوز الخاصة بك ---" > "$LINKS_FILE"
-echo "تاريخ التشغيل: $(date)" >> "$LINKS_FILE"
-grep -oE 'forwarding from [a-zA-Z0-9.-]+' tunnels.log | sed 's/forwarding from /🔗 /' >> "$LINKS_FILE"
-echo "------------------------------" >> "$LINKS_FILE"
+if [ ! -f "$DISK_FILE" ]; then
+    qemu-img create -f qcow2 "$DISK_FILE" 64G
+fi
 
-echo "✅ تم حفظ الروابط في ملف: $LINKS_FILE"
-cat "$LINKS_FILE"
+echo "📥 Checking ISO..."
 
-# 5. تشغيل الويندوز (16GB RAM / 7 Cores)
-echo "🎮 جاري تشغيل المثبت (Installation Mode)..."
+if [ ! -f "$ISO_FILE" ]; then
+    wget -O "$ISO_FILE" "$ISO_URL"
+fi
+
+echo "🚀 Starting Windows VM..."
+
 qemu-system-x86_64 \
     -enable-kvm \
-    -cpu host -smp 7 -m 16G -machine q35 \
-    -drive file="$DISK_FILE",if=ide,format=qcow2 \
+    -cpu host \
+    -smp 8 \
+    -m 16G \
+    -machine q35 \
+    -drive file="$DISK_FILE",if=virtio,format=qcow2 \
     -cdrom "$ISO_FILE" \
     -boot order=d \
-    -vnc :0 \
-    -net user,hostfwd=tcp::3389-:3389 -net nic \
-    -usb -device usb-tablet
+    -vnc 0.0.0.0:0 \
+    -net nic \
+    -net user,hostfwd=tcp::3389-:3389 \
+    -usb \
+    -device usb-tablet \
+    > qemu.log 2>&1 &
+
+sleep 5
+
+echo "🌐 Starting noVNC on port 6080..."
+
+websockify --web=/usr/share/novnc/ 6080 localhost:5900 > novnc.log 2>&1 &
+
+sleep 3
+
+echo ""
+echo "✅ Windows started successfully!"
+echo ""
+echo "🔗 Open noVNC:"
+echo "http://localhost:6080/vnc.html"
+echo ""
+echo "📌 IDX Preview Port:"
+echo "6080"
+echo ""
+echo "🖥️ RDP Port داخل الويندوز:"
+echo "3389"
