@@ -7,6 +7,9 @@
     sudo
     qemu
     curl
+    wget
+    novnc
+    websockify
   ];
 
   env = {
@@ -32,7 +35,17 @@
     };
 
     previews = {
-      enable = false;
+      enable = true;
+      previews = {
+        web = {
+          command = [
+            "bash"
+            "-c"
+            "echo noVNC running"
+          ];
+          manager = "web";
+        };
+      };
     };
   };
 }
